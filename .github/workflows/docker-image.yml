@@ -17,7 +17,7 @@ jobs:
 
       # Step 2: Git Semantic Versioning
       - name: Git Semantic Version
-        uses: PaulHatch/semantic-version@v4.0.3
+        uses: PaulHatch/semantic-version@latest
         with:
           major_pattern: "major:"
           minor_pattern: "feat:"
@@ -27,11 +27,15 @@ jobs:
       # Step 3: Docker Login
       # - Explanation: Log in to Docker Hub using credentials from secrets
       - name: Docker Login
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+      # You may pin to the exact commit or the version.
+      # uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
+        uses: docker/login-action@v3.0.0
+        with:
+          # Username used to log against the Docker registry
+          username: ${{ secrets.DOCKER_USERNAME }}
+          # Password or personal access token used to log against the Docker registry
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
 
       # Step 4: Build Docker Image
       # - Explanation: Build Docker images with the specified version and latest tag
