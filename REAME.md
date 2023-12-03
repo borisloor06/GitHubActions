@@ -33,11 +33,11 @@ Durante el proceso de cración de la github action se presento un error de login
 
 ![Error](image-3.png)
 
-## Successful Actions
+## Acciones de GitHub 
 
-### 5. Push Success
+### 5. Push exitoso
 
-Confirmation that the image has been successfully pushed to DockerHub.
+Demostración de la ejecución exitosa de la acción de github.
 
 ![Push Success](image-4.png)
 
@@ -66,4 +66,6 @@ Demostración de la versión exitosa de la imagen de DockerHub.
 ## Conclusion
 
 Se logro realizar la subida de la imagen de docker a dockerhub de forma automatica, con la creación de un tag de versionado, y la creación de un secreto en el repositorio de github para el acceso a dockerhub.
+
+repositorio de pruebas: https://github.com/borisloor06/GitHubActions
 
