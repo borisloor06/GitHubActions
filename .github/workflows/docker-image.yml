@@ -1,47 +1,52 @@
-name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
-# - explicación: Runner en ubuntu
-   runs-on: ubuntu-latest
-# - explicación: Los siguientes pasos son ejecutados al realizar un git push
-   steps:
+    runs-on: ubuntu-latest
 
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: Git Semantic Version
-      uses: PaulHatch/semantic-version@v4.0.3
-      with:
-        major_pattern: "major:"
-        minor_pattern: "feat:"
-        format: "${major}.${minor}.${patch}-prerelease${increment}"
-        id: version
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-# - explicación: Iniciar sesión en Docker desde GIT
-    - name: Docker Login
-      env:
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      
+      # Step 2: Git Semantic Versioning
+      - name: Git Semantic Version
+        uses: PaulHatch/semantic-version@v4.0.3
+        with:
+          major_pattern: "major:"
+          minor_pattern: "feat:"
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+          id: version
+
+      # Step 3: Docker Login
+      # - Explanation: Log in to Docker Hub using credentials from secrets
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       
-    - name: Build Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-      run: |
-        docker build -t bloor06/practica4:$NEW_VERSION .
-        docker build -t bloor06/practica4:latest .
-# - explicación: Subir imagen al docker hub aplicando el parámetro NEW_VERSION
-    - name: Push Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-      run: |
-        docker push bloor06/practica4:$NEW_VERSION
-        docker push bloor06/practica4:latest
+      # Step 4: Build Docker Image
+      # - Explanation: Build Docker images with the specified version and latest tag
+      - name: Build Docker Image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build -t bloor06/practica4:$NEW_VERSION .
+          docker build -t bloor06/practica4:latest .
+
+      # Step 5: Push Docker Image
+      # - Explanation: Push Docker images to Docker Hub with the specified version
+      - name: Push Docker Image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker push bloor06/practica4:$NEW_VERSION
+          docker push bloor06/practica4:latest
