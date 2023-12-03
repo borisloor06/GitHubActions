@@ -6,3 +6,6 @@ Prueba de docker image ejecutandose
 
 Imagen en dockerhub
 ![Alt text](image-2.png)
+
+Errors found
+![Alt text](image-3.png)
