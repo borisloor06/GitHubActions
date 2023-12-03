@@ -22,7 +22,7 @@ jobs:
           major_pattern: "major:"
           minor_pattern: "feat:"
           format: "${major}.${minor}.${patch}-prerelease${increment}"
-          id: version
+        id: version
 
       # Step 3: Docker Login
       # - Explanation: Log in to Docker Hub using credentials from secrets
